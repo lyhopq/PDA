@@ -11,6 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   chp4.rst
+
 
 
 Indices and tables
