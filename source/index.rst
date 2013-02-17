@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    chp4.rst
+   chp12.rst
 
 
 
