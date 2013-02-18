@@ -1,5 +1,6 @@
 #!/bin/sh
 
+cp source/_static build/latex -rf
 make latex
 pwd=`pwd`
 cd build/latex
