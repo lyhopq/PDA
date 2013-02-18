@@ -36,11 +36,19 @@ NumPy 是 Numerical Python 的简称，是高性能计算和数据分析的基�
 pandas也提供了更多的一些特定领域的功能，如时间序列操作，这是NumPy所没有的。
 
  
- .. figure:: _static/pda1.png
+ .. image:: _static/pda1.png
    :width: 100
    :height: 100
 
-   skjfalsjflajfla;jfdlajfal我是谁
+ 在本章和全书，我始终使用 **import numpy as np** 。当然，你喜欢在代码中使用 **from numpy import *"" 来避免写 **np** ，但我要提醒你反对这种习惯。
 
 
+NumPy ndarray：多维列表对象
+==================================
 
+
+NumPy的一个关键特性是它的N维列表对象(ndarray)，它在Python中是一个大型数据集的快速的，灵活的容器。
+列表使你能够在整个数据块上进行数学运算，且与对应的标量元素间操作有相似的语法： ::
+
+todo
+    
