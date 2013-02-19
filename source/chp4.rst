@@ -40,7 +40,7 @@ pandas也提供了更多的一些特定领域的功能，如时间序列操作�
    :width: 100
    :height: 100
 
- 在本章和全书，我始终使用 **import numpy as np** 。当然，你喜欢在代码中使用 **from numpy import *"" 来避免写 **np** ，但我要提醒你反对这种习惯。
+ 在本章和全书，我始终使用 **import numpy as np** 。当然，你喜欢在代码中使用 **from numpy import \*** 来避免写 **np** ，但我要提醒你反对这种习惯。
 
 
 NumPy ndarray：多维列表对象
