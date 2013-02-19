@@ -6,7 +6,6 @@
 Welcome to Python For Data Analysis's documentation!
 ====================================================
 
-Contents:
 
 .. toctree::
    :maxdepth: 2
