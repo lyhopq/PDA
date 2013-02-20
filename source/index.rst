@@ -9,6 +9,7 @@ Welcome to Python For Data Analysis's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :numbered:
 
    chp4.rst
    chp12.rst
