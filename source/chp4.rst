@@ -275,27 +275,19 @@ Dtypes是使NumPy如此强大和灵活的一部分。在大多数情况下，它
 
 你也可以使用速记的类型码字符窜来指定一个dtype： ::
 
-       In [43]: empty_uint32 = np.empty(8, dtype='u4')
-       In [44]: empty_uint32
-       Out[44]:
-       array([ 0, 0, 65904672, 0, 64856792, 0,
-               39438163, 0], dtype=uint32)
+  In [43]: empty_uint32 = np.empty(8, dtype='u4')
+  In [44]: empty_uint32
+  Out[44]:
+  array([ 0, 0, 65904672, 0, 64856792, 0,
+          39438163, 0], dtype=uint32)
 
-\
+.. ttip::
 
-  .. image:: _static/pda1.png
-     :width: 100
-     :height: 100
+    调用 **astype** 总是会创建一个新的数组（原数据的拷贝），即使是新的dtype和原来的dtype相同。
 
-  调用 **astype** 总是会创建一个新的数组（原数据的拷贝），即使是新的dtype和原来的dtype相同。
+.. twarning::
 
-\
-
-  .. image:: _static/pda2.png
-     :width: 100
-     :height: 100
-
-  值得牢记的是浮点数，如那些是 **float64** 和 **float32** 的数组，是唯一能够接近分数的。在复杂的计算中，可能会产生 *浮点错误* ，计较时到了一定的小数位数时才有效。
+    值得牢记的是浮点数，如那些是 **float64** 和 **float32** 的数组，是唯一能够接近分数的。在复杂的计算中，可能会产生 *浮点错误* ，计较时到了一定的小数位数时才有效。
 
 
 数组和标量间的操作
@@ -354,5 +346,3 @@ NumPy的索引是一个内容丰富的主题，因为有许多方法可以使你
     import os
     print os.getcwd() #❶
     print os.environ
-
-#{1}sjdflaj
