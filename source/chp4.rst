@@ -242,8 +242,63 @@ Dtypes是使NumPy如此强大和灵活的一部分。在大多数情况下，它
 +------------------+---------+-------------------------------------------+
 
 
+你可以使用ndarray的 **astype** 方法显示的把一个数组的dtype转换或 ``投射`` 到另外的类型： ::
+  
+  In [31]: arr = np.array([1, 2, 3, 4, 5])
+  In [32]: arr.dtype
+  Out[32]: dtype('int64')
+  In [33]: float_arr = arr.astype(np.float64)
+  In [34]: float_arr.dtype
+  Out[34]: dtype('float64')
 
 
+在这个例子中，整形被转换到浮点型。如果把浮点数转换到整形dtype，小数部分将会被截断： ::
+
+  In [35]: arr = np.array([3.7, -1.2, -2.6, 0.5, 12.9, 10.1])
+  In [36]: arr
+  Out[36]: array([ 3.7, -1.2, -2.6, 0.5, 12.9, 10.1])
+  In [37]: arr.astype(np.int32)
+  Out[37]: array([ 3, -1, -2, 0, 12, 10], dtype=int32)
+
+你可能有一个字符窜数组表示的数字，可以使用 **astype** 把它们转换到数字的形式： ::
+
+  In [38]: numeric_strings = np.array(['1.25', '-9.6', '42'], dtype=np.string_)
+  In [39]: numeric_strings.astype(float)
+  Out[39]: array([ 1.25, -9.6 , 42. ])
+
+
+如果因为某些原因（如一个字符窜不能转换到 **float64** ）转换失败了，将会引起一个 **TypeError** 。正如你所看见的，我有一些懒，使用 **float** 而不是 **np.float64**；NumPy会足够聪明的把Python的类型对应到等价的dtypes。
+
+你也可以使用dtype的另一个属性： ::
+
+  In [40]: int_array = np.arange(10)
+  In [41]: calibers = np.array([.22, .270, .357, .380, .44, .50], dtype=np.float64)
+  In [42]: int_array.astype(calibers.dtype)
+  Out[42]: array([ 0., 1., 2., 3., 4., 5., 6., 7., 8., 9.])
+
+你也可以使用速记的类型码字符窜来指定一个dtype： ::
+
+       In [43]: empty_uint32 = np.empty(8, dtype='u4')
+       In [44]: empty_uint32
+       Out[44]:
+       array([ 0, 0, 65904672, 0, 64856792, 0,
+               39438163, 0], dtype=uint32)
+
+\
+
+  .. image:: _static/pda1.png
+     :width: 100
+     :height: 100
+
+  调用 **astype**总是会创建一个新的数组（原数据的拷贝），即使是新的dtype和原来的dtype相同。
+
+\
+
+  .. image:: _static/pda2.png
+     :width: 100
+     :height: 100
+
+  值得牢记的是浮点数，如那些是 **float64** 和 **float32** 的数组，是唯一能够接近分数的。在复杂的计算中，可能会产生 *浮点错误* ，计较时到了一定的小数位数时才有效。
 
 
 
