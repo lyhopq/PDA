@@ -740,6 +740,18 @@ Fancy索引
    :quote: $ 
    :delim: |
 
-     add                           ｜ 在数组中添加相应的元素
-     substract                      |  sd
+     add                           | 在数组中添加相应的元素
+     substract                     | 在第一个数组中减去第二个数组
+     multiply                      | 对数组元素相乘
+     divide, floor_divide          | 除和地板除（去掉余数）
+     power                         | 使用第二个数组作为指数提升第一个数组中的元素
+     maximum, fmax                 | 基于元素的最大值。 `fmax` 忽略 ``NaN``
+     minimum, fmin                 | 基于元素的最小值。 `fmin` 忽略 ``NaN``
+     mod                           | 基于元素的模（取余）                 
+     copysign                      | 拷贝第二个参数的符号到第一个参数
+     greater, greater_equal, less, less_equal, not_equal        | 基于元素的比较，产生布尔数组。等价于中缀操作符 ``>, >=, <, <=, ==, !=``
+     logical_and, logical_or, logical_xor | 计算各个元素逻辑操作的真值。等价于中缀操作符 ``&, |, ^`` 
+
+
+
 
