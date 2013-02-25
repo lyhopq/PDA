@@ -12,6 +12,7 @@ Welcome to Python For Data Analysis's documentation!
    :numbered:
 
    chp4.rst
+   chp5.rst
    chp12.rst
 
 
