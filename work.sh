@@ -1,7 +1,6 @@
 cd ~/Ubuntu\ One/Books/PDA/
-evince Python\ for\ Data\ Analysis.pdf &
+ipython notebook --pylab inline > /dev/null 2>&1 &
 nautilus . 
-ipython notebook --pylab inline &
-sleep 10
+evince Python\ for\ Data\ Analysis.pdf &
 vim source/chp$1.rst
 
