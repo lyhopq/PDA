@@ -292,7 +292,19 @@ DataFrame
 
 给一个不存在的列赋值，将会创建一个新的列。 像字典一样 **del** 关键字将会删除列： ::
 
-  P118
+  In [53]: frame2['eastern'] = frame2.state == 'Ohio'
+  In [54]: frame2
+  Out[54]:
+        year  state pop   debt eastern
+  one   2000   Ohio 1.5    NaN    True
+  two   2001   Ohio 1.7   -1.2    True
+  three 2002   Ohio 3.6    NaN    True
+  four  2001 Nevada 2.4   -1.5   False
+  five  2002 Nevada 2.9   -1.7   False
+
+  In [55]: del frame2['eastern']
+  In [56]: frame2.columns
+  Out[56]: Index([year, state, pop, debt], dtype=object)
 
 .. twarning::
     
@@ -300,37 +312,77 @@ DataFrame
 
 另一种通用的数据形式是一个嵌套的字典的字典格式： ::
 
-  P118
+  In [57]: pop = {'Nevada': {2001: 2.4, 2002: 2.9},
+     ....: 'Ohio': {2000: 1.5, 2001: 1.7, 2002: 3.6}}
 
 如果被传递到DataFrame，它的外部键会被解释为列索引，内部键会被解释为行索引： ::
 
-  P118
+  In [58]: frame3 = DataFrame(pop)
+  In [59]: frame3
+  Out[59]:
+       Nevada Ohio
+  2000    NaN  1.5
+  2001    2.4  1.7
+  2002    2.9  3.6
 
 当然，你总是可以对结果转置： ::
 
-  P118
+  In [60]: frame3.T
+  Out[60]:
+  2000 2001 2002
+  Nevada NaN 2.4 2.9
+  Ohio 1.5 1.7 3.6
 
 内部字典的键被结合并排序来形成结果的索引。如果指定了一个特定的索引，就不是这样的了： ::
 
-  P119
+  In [61]: DataFrame(pop, index=[2001, 2002, 2003])
+  Out[61]:
+          Nevada Ohio
+    2001     2.4  1.7
+    2002     2.9  3.6
+    2003     NaN  NaN
 
 Series的字典也以相同的方式来处理： ::
 
-  P119
+  In [62]: pdata = {'Ohio': frame3['Ohio'][:-1],
+    ....: 'Nevada': frame3['Nevada'][:2]}
+
+  In [63]: DataFrame(pdata)
+  Out[63]:
+       Nevada Ohio
+  2000    NaN  1.5
+  2001    2.4  1.7
 
 你可以传递到DataFrame构造器的东西的完整清单，见\ `表格5-1`_\ 。
 
 如果一个DataFrame的 **index** 和 **columns** 有它们的 **name** ，也会被显示出来： ::
 
-  p119
+  In [64]: frame3.index.name = 'year'; frame3.columns.name = 'state'
+  In [65]: frame3
+  Out[65]:
+  state Nevada Ohio
+  year
+  2000     NaN  1.5
+  2001     2.4  1.7
+  2002     2.9  3.6
 
 像Series一样， **values** 属性返回一个包含在DataFrame中的数据的二维ndarray： ::
   
-  P119
+  In [66]: frame3.values
+  Out[66]:
+  array([[ nan, 1.5],
+         [ 2.4, 1.7],
+         [ 2.9, 3.6]])
 
 如果DataFrame的列有不同的dtypes，返回值数组将会给所有的列选择一个合适的dtyps： ::
 
-  P119
+  In [67]: frame2.values
+  Out[67]:
+  array([[2000, Ohio, 1.5, nan],
+         [2001, Ohio, 1.7, -1.2],
+         [2002, Ohio, 3.6, nan],
+         [2001, Nevada, 2.4, -1.5],
+         [2002, Nevada, 2.9, -1.7]], dtype=object)
 
 .. _`表格5-1`:
 
@@ -363,15 +415,34 @@ Series的字典也以相同的方式来处理： ::
 
 pandas的索引对象用来保存坐标轴标签和其它元数据（如坐标轴名或名称）。构建一个Series或DataFrame时任何数组或其它序列标签在内部转化为索引： ::
 
-  P120
+  In [68]: obj = Series(range(3), index=['a', 'b', 'c'])
+  In [69]: index = obj.index
+  In [70]: index
+  Out[70]: Index([a, b, c], dtype=object)
+  In [71]: index[1:]
+  Out[71]: Index([b, c], dtype=object)
 
 索引对象是不可变的，因此不能由用户改变： ::
 
-  P120
+  In [72]: index[1] = 'd'
+  ---------------------------------------------------------------------------
+  Exception Traceback (most recent call last)
+  <ipython-input-72-676fdeb26a68> in <module>()
+  ----> 1 index[1] = 'd'
+  /Users/wesm/code/pandas/pandas/core/index.pyc in __setitem__(self, key, value)
+      302 def __setitem__(self, key, value):
+      303 """Disable the setting of values."""
+  --> 304 raise Exception(str(self.__class__) + ' object is immutable')
+      305
+      306 def __getitem__(self, key):
+  Exception: <class 'pandas.core.index.Index'> object is immutable
 
 索引对象的不可变性非常重要，这样它可以在数据结构中结构中安全的共享： ::
 
-  P121
+  In [73]: index = pd.Index(np.arange(3))
+  In [74]: obj2 = Series([1.5, -2.5, 0], index=index)
+  In [75]: obj2.index is index
+  Out[75]: True
 
 `表格5-2`_ 是库中内建的索引类清单。通过一些开发努力，索引可以被子类化，来实现特定坐标轴索引功能。
 
@@ -398,7 +469,18 @@ pandas的索引对象用来保存坐标轴标签和其它元数据（如坐标�
 
 除了类似于阵列，索引也有类似固定大小集合一样的功能： ::
 
-  P121
+  In [76]: frame3
+  Out[76]:
+  state Nevada Ohio
+  year
+  2000     NaN  1.5
+  2001     2.4  1.7
+  2002     2.9  3.6
+
+  In [77]: 'Ohio' in frame3.columns
+  Out[77]: True
+  In [78]: 2003 in frame3.index
+  Out[78]: False
 
 每个索引都有许多关于集合逻辑的方法和属性，且能够解决它所包含的数据的常见问题。这些都总结在\ `表格5-3`_ 中。
 
@@ -441,15 +523,43 @@ pandas的索引对象用来保存坐标轴标签和其它元数据（如坐标�
 
 pandas对象的一个关键的方法是 **reindex** ，意味着使数据符合一个新的索引来构造一个新的对象。来看一下下面一个简单的例子： ::
 
-  P122
+  In [79]: obj = Series([4.5, 7.2, -5.3, 3.6], index=['d', 'b', 'a', 'c'])
+  In [80]: obj
+  Out[80]:
+  d  4.5
+  b  7.2
+  a -5.3
+  c  3.6
 
-在Series上调用 **reindex** 重排数据，使得它符合新的索引，如果那个索引的值不存在就引入缺失数据值： ：：
+在Series上调用 **reindex** 重排数据，使得它符合新的索引，如果那个索引的值不存在就引入缺失数据值： ::
 
-  P122
+  In [81]: obj2 = obj.reindex(['a', 'b', 'c', 'd', 'e'])
+  In [82]: obj2
+  Out[82]:
+  a -5.3
+  b 7.2
+  c 3.6
+  d 4.5
+  e NaN
+  In [83]: obj.reindex(['a', 'b', 'c', 'd', 'e'], fill_value=0)
+  Out[83]:
+  a -5.3
+  b 7.2
+  c 3.6
+  d 4.5
+  e 0.0
 
 为了对时间序列这样的数据排序，当重建索引的时候可能想要对值进行内插或填充。 **method** 选项可以是你做到这一点，使用一个如 **ffill** 的方法来向前填充值： ::
 
-  P123
+  In [84]: obj3 = Series(['blue', 'purple', 'yellow'], index=[0, 2, 4])
+  In [85]: obj3.reindex(range(6), method='ffill')
+  Out[85]:
+  0   blue
+  1   blue
+  2 purple
+  3 purple
+  4 yellow
+  5 yellow
 
 `表格5-4`_ 是可用的 **method** 选项的清单。在此，内差比正向和反向填充更复杂。
 
@@ -469,19 +579,55 @@ pandas对象的一个关键的方法是 **reindex** ，意味着使数据符合�
 
 对于DataFrame， **reindex** 可以改变（行）索引，列或两者。当只传入一个序列时，结果中的行被重新索引了： ::
 
-  P123
+  In [86]: frame = DataFrame(np.arange(9).reshape((3, 3)), index=['a', 'c', 'd'],
+  ....: columns=['Ohio', 'Texas', 'California'])
+  In [87]: frame
+  Out[87]:
+    Ohio Texas California
+  a    0     1          2
+  c    3     4          5
+  d    6     7          8
+
+  In [88]: frame2 = frame.reindex(['a', 'b', 'c', 'd'])
+  In [89]: frame2
+  Out[89]:
+    Ohio Texas California
+  a    0     1          2
+  b  NaN   NaN        NaN
+  c    3     4          5
+  d    6     7          8
+
 
 使用 **columns** 关键字可以是列重新索引： ::
 
-  P124
+  In [90]: states = ['Texas', 'Utah', 'California']
+  In [91]: frame.reindex(columns=states)
+  Out[91]:
+     Texas Utah California
+  a      1  NaN          2
+  c      4  NaN          5
+  d      7  NaN          8
 
 一次可以对两个重新索引，可是插值只在行侧（0坐标轴）进行： ::
 
-  P124
-
+  In [92]: frame.reindex(index=['a', 'b', 'c', 'd'], method='ffill',
+     ....: columns=states)
+  Out[92]:
+     Texas Utah California
+  a      1  NaN          2
+  b      1  NaN          2
+  c      4  NaN          5
+  d      7  NaN          8
+  
 正如你将看到的，使用带标签索引的 **ix** 可以把重新索引做的更简单： ::
 
-  P124
+  In [93]: frame.ix[['a', 'b', 'c', 'd'], states]
+  Out[93]:
+    Texas Utah California
+  a     1  NaN          2
+  b   NaN  NaN        NaN
+  c     4  NaN          5
+  d     7  NaN          8
 
 .. list-table:: reindex 函数的参数
    :widths: 10, 20
@@ -500,4 +646,5 @@ pandas对象的一个关键的方法是 **reindex** ，意味着使数据符合�
    * - copy
      - 如果新索引与就的相等则底层数据不会拷贝。默认为True(即始终拷贝）
 
-next
+从一个坐标轴删除条目
+======================
