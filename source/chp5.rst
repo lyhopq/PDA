@@ -205,7 +205,7 @@ DataFrame
   3 2.4   Nevada 2001
   4 2.9   Nevada 2002
 
-如果你设定了一个列的顺序，DataFrame的列将会精确的按照你所传递的顺序排列： ：：
+如果你设定了一个列的顺序，DataFrame的列将会精确的按照你所传递的顺序排列： ::
 
   In [39]: DataFrame(data, columns=['year', 'state', 'pop'])
   Out[39]:
