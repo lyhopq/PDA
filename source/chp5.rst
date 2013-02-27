@@ -795,3 +795,88 @@ Series索引( **obj[...]** )的工作原理类似与NumPy索引，除了可以�
 算术和数据对其
 ----------------
 
+pandas的最重要的特性之一是在具有不同索引的对象间进行算术运算的行为。当把对象加起来时，如果有任何的索引对不相同的话，在结果中将会把各自的索引联合起来。让我们看一个简单的例子： ::
+
+.. image:: _static/126.png
+
+把它们加起来生成： 
+
+..image:: _static/130.png
+
+内部数据对其，在索引不重合的地方引入了NA值。数据缺失在算术运算中会传播。
+
+对于DataFrame，对其在行和列上都表现的很好： 
+
+.. image:: _static/131.png
+
+把这些加起来返回一个DataFrame，它的索引和列是每一个DataFrame对应的索引和列的联合： 
+
+.. image:: _static/135.png
+
+带填充值的算术方法
++++++++++++++++++++++
+
+在不同索引对象间的算术运算，当一个轴标签在另一个对象中找不到时，你可能想要填充一个特定的值，如0：
+
+.. image:: _static/136.png
+
+把它们加起来导致在不重合的位置出现NA值：
+
+.. image:: _static/140.png
+
+在 **df1** 上使用 **add** 方法，我把 **df2** 传递给它并给 **fill_value** 赋了一个参数： ::
+
+.. image:: _static/141.png
+
+相关的，当你重新索引Series或DataFrame时，你可以设定一个不同的填充值：
+
+.. image:: _static/142.png
+
+.. _`表格5-7`:
+
+.. list-table:: 灵活的算术方法
+   :widths: 10, 20
+   :header-rows: 1
+
+   * - add
+     - 加法(+)
+   * - sub
+     - 减法(-)
+   * - div
+     - 除法(/)
+   * - mul
+     - 乘法(*)
+
+DataFrame 和 Series 间的操作
++++++++++++++++++++++++++++++++++
+
+与NumPy数组一样，很好的定义了DataFrame和Series间的算术操作。首先，作为一个激发性的例子，考虑一个二维数组和它的一个行间的差分：
+
+.. image:: _static/143.png
+
+这被称为 *广播* (broadcasting)，在\ :ref:`第12章 <chp12index>`\ 将会对此进行更详细的解释。在一个DataFrame和一个Series间的操作是类似的：
+
+.. image:: _static/147.png
+
+默认的，DataFrame和Series间的算术运算Series的索引将匹配DataFrame的列，并在行上扩展：
+
+.. image:: _static/151.png
+
+如果一个索引值在DataFrame的列和Series的索引里都找不着，对象将会从它们的联合重建索引：
+
+.. image:: _static/152.png
+
+
+如果想在行上而不是列上进行扩展，你要使用一个算术方法。例如：
+
+.. image:: _static/154.png
+
+.. image:: _static/157.png
+
+你所传递的坐标值是将要匹配的 *坐标* 。在这种情况下，我们的意思是匹配DataFrame的行，并进行扩展。
+
+
+函数应用和映射
+--------------------
+
+
